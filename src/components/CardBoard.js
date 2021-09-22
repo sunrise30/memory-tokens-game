@@ -1,7 +1,6 @@
 function CardBoard({ cardArray, cardsWon, cardsChosenId, onClickCard }) {
 
   const chooseImage = (cardId) => {
-    cardId = cardId.toString();
     if (cardsWon.includes(cardId)) {
       return `${window.location.origin}/images/white.png`;
     } else if (cardsChosenId.includes(cardId)) {
@@ -18,8 +17,7 @@ function CardBoard({ cardArray, cardsWon, cardsChosenId, onClickCard }) {
           <img
             key={key}
             src={chooseImage(key)}
-            data-id={key}
-            onClick={onClickCard}
+            onClick={() => onClickCard(key)}
           />
         ))
       }

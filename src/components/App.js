@@ -76,6 +76,42 @@ function App() {
     }
   }, [account]);
 
+  useEffect(() => {
+    if (cardsChosen.length === 2) {
+      setTimeout(checkForMatch, 100);
+    }
+  }, [cardsChosen, cardsChosenId]);
+
+  const onClickChard = (cardId) => {
+    if (!cardsWon.includes(cardId.toString())) {
+      flipCard(cardId);
+    }
+  }
+
+  const flipCard = async (cardId) => {
+    setCardsChosen([...cardsChosen, cardArray[cardId].name]);
+    setCardsChosenId([...cardsChosenId, cardId]);
+  }
+
+  const checkForMatch = () => {
+    const optionOneId = cardsChosenId[0];
+    const optionTwoId = cardsChosenId[1];
+
+    if(optionOneId == optionTwoId) {
+      alert('You have clicked the same image!')
+    } else if (cardsChosen[0] === cardsChosen[1]) {
+      alert('You found a match');
+      setCardsWon([...cardsWon, optionOneId, optionTwoId]);
+    } else {
+      alert('Sorry, try again');
+    }
+    setCardsChosen([]);
+    setCardsChosenId([]);
+    if (cardsWon.length === CardArray.length) {
+      alert('Congratulations! You found them all!');
+    }
+  }
+
   return (
     <div>
       <Navbar account={account} />
@@ -89,7 +125,7 @@ function App() {
                 cardArray={cardArray}
                 cardsWon={cardsWon}
                 cardsChosenId={cardsChosenId}
-                onClickCard={() => {}}
+                onClickCard={onClickChard}
               />
             </div>
           </main>
