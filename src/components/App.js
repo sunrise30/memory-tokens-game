@@ -8,6 +8,7 @@ function App() {
   const [account, setAccount] = useState('0x0');
   const [token, setToken] = useState(null);
   const [totalSupply, setTotalSupply] = useState(0);
+  const [tokenURIs, setTokenURIs] = useState([]);
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -38,6 +39,14 @@ function App() {
       setToken(token);
       const totalSupply = await token.methods.totalSupply().call();
       setTotalSupply(totalSupply);
+
+      // Load tokens
+      const balanceOf = await token.methods.balanceOf(account).call();
+      for (let i = 0; i < balanceOf; i++) {
+        const id = await token.methods.tokenOfOwnerByIndex(account, i).call();
+        const tokenURI = await token.methods.tokenURI(id).call();
+        setTokenURIs([...tokenURIs, tokenURI]);
+      }
     } else {
       alert('Smart contract not deployed to detected network.');
     }
