@@ -3,6 +3,8 @@ import Web3 from 'web3';
 import './App.css';
 import Navbar from './Navbar';
 import MemoryToken from '../abis/MemoryToken.json';
+import CardArray from '../constants/CardArray.json';
+import CardBoard from './CardBoard';
 
 function App() {
   const [account, setAccount] = useState('0x0');
@@ -67,6 +69,7 @@ function App() {
   useEffect(() => {
     const load = async () => {
       await loadBlockchainData();
+      setCardArray(CardArray.sort(() => 0.5 - Math.random()));
     }
     if (account !== '0x0') {
       load();
@@ -82,6 +85,12 @@ function App() {
           <main role="main" className="col-lg-12 d-flex text-center">
             <div className="content ms-auto me-auto">
               <h1 className="d-4">Start matching now!</h1>
+              <CardBoard
+                cardArray={cardArray}
+                cardsWon={cardsWon}
+                cardsChosenId={cardsChosenId}
+                onClickCard={() => {}}
+              />
             </div>
           </main>
         </div>
