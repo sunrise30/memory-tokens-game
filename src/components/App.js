@@ -9,6 +9,10 @@ function App() {
   const [token, setToken] = useState(null);
   const [totalSupply, setTotalSupply] = useState(0);
   const [tokenURIs, setTokenURIs] = useState([]);
+  const [cardArray, setCardArray] = useState([]);
+  const [cardsChosen, setCardsChosen] = useState([]);
+  const [cardsChosenId, setCardsChosenId] = useState([]);
+  const [cardsWon, setCardsWon] = useState([]);
 
   const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -53,18 +57,20 @@ function App() {
   }
 
   useEffect(() => {
-    async function fetchData() {
+    const load = async () => {
       await loadWeb3();
       await loadAccount();
     }
-    fetchData();
+    load();
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
+    const load = async () => {
       await loadBlockchainData();
     }
-    fetchData();
+    if (account !== '0x0') {
+      load();
+    }
   }, [account]);
 
   return (
