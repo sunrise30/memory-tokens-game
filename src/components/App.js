@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import MemoryToken from '../abis/MemoryToken.json';
 import CardArray from '../constants/CardArray.json';
 import CardBoard from './CardBoard';
+import MyTokenCards from './MyTokenCards';
 
 function App() {
   const [account, setAccount] = useState('0x0');
@@ -48,11 +49,13 @@ function App() {
 
       // Load tokens
       const balanceOf = await token.methods.balanceOf(account).call();
+      const tokenURIsData = [];
       for (let i = 0; i < balanceOf; i++) {
         const id = await token.methods.tokenOfOwnerByIndex(account, i).call();
         const tokenURI = await token.methods.tokenURI(id).call();
-        setTokenURIs([...tokenURIs, tokenURI]);
+        tokenURIsData.push(tokenURI);
       }
+      setTokenURIs(tokenURIsData);
     } else {
       alert('Smart contract not deployed to detected network.');
     }
@@ -135,6 +138,7 @@ function App() {
                 cardsChosenId={cardsChosenId}
                 onClickCard={onClickChard}
               />
+              <MyTokenCards tokenURIs={tokenURIs} />
             </div>
           </main>
         </div>
