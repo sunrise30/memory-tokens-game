@@ -101,7 +101,15 @@ function App() {
       alert('You have clicked the same image!')
     } else if (cardsChosen[0] === cardsChosen[1]) {
       alert('You found a match');
-      setCardsWon([...cardsWon, optionOneId, optionTwoId]);
+      token.methods.mint(
+        account,
+        window.location.origin + CardArray[optionOneId].img.toString()
+      )
+      .send({ from: account })
+      .on('transactionHash', (hash) => {
+        setCardsWon([...cardsWon, optionOneId, optionTwoId]);
+        setTokenURIs([...tokenURIs, CardArray[optionOneId].img]);
+      })
     } else {
       alert('Sorry, try again');
     }
@@ -119,7 +127,7 @@ function App() {
       <div className="container-fluid mt-5">
         <div className="row">
           <main role="main" className="col-lg-12 d-flex text-center">
-            <div className="content ms-auto me-auto">
+            <div className="content ms-auto me-auto" style={{maxWidth: '400px'}}>
               <h1 className="d-4">Start matching now!</h1>
               <CardBoard
                 cardArray={cardArray}
